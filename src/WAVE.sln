@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29409.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WAVE", "WAVE.csproj", "{AD4A0513-66AF-4AEF-88B3-5508545408C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WAVE", "WAVE.csproj", "{AD4A0513-66AF-4AEF-88B3-5508545408C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WAVE.lib", "..\WAVE.lib\WAVE.lib.csproj", "{715B1637-4C98-4E56-A314-DC573362A173}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WAVE.UnitTests", "..\WAVE.UnitTests\WAVE.UnitTests.csproj", "{55081D90-B19F-493D-9B55-06307B62B368}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{AD4A0513-66AF-4AEF-88B3-5508545408C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD4A0513-66AF-4AEF-88B3-5508545408C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD4A0513-66AF-4AEF-88B3-5508545408C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{715B1637-4C98-4E56-A314-DC573362A173}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{715B1637-4C98-4E56-A314-DC573362A173}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{715B1637-4C98-4E56-A314-DC573362A173}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{715B1637-4C98-4E56-A314-DC573362A173}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55081D90-B19F-493D-9B55-06307B62B368}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55081D90-B19F-493D-9B55-06307B62B368}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55081D90-B19F-493D-9B55-06307B62B368}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55081D90-B19F-493D-9B55-06307B62B368}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
