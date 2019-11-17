@@ -7,7 +7,7 @@ namespace WAVE.lib
 {
     public class WindowsUpdates
     {
-        public static List<string> CheckForUpdates()
+        public static List<string> GetAvailableUpdateList()
         {
             var uSession = new UpdateSession();
             var uSearcher = uSession.CreateUpdateSearcher();

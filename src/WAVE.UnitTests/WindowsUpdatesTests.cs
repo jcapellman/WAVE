@@ -9,7 +9,7 @@ namespace WAVE.UnitTests
         [Fact]
         public void CheckForUpdates()
         {
-            var result = WindowsUpdates.CheckForUpdates();
+            var result = WindowsUpdates.GetAvailableUpdateList();
 
             Assert.InRange(result.Count, 0, int.MaxValue);
         }
