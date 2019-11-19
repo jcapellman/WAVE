@@ -9,10 +9,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Setup .NET Core
+    - name: Setup zee .NET
       uses: warrenbuckley/Setup-MSBuild@v1
       with:
         dotnet-version: 3.0.100
-    - name: Build with dotnet
+    - name: Restore zee Packages
       run: dotnet restore src/WAVE.lib/WAVE.lib.csproj
+    - name: Build zee project
       run: msbuild src/WAVE.lib/WAVE.lib.csproj /p:Configuration=Release
