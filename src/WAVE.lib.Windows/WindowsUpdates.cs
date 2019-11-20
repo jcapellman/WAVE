@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
+using WAVE.lib.Updates.Base;
+
 using WUApiLib;
 
-namespace WAVE.lib
+namespace WAVE.lib.Windows
 {
-    public class WindowsUpdates
+    public class WindowsUpdates : BaseUpdateCheck
     {
-        public static List<string> GetAvailableUpdateList()
+        public override List<string> GetUpdateNameOnlyList()
         {
             var uSession = new UpdateSession();
             var uSearcher = uSession.CreateUpdateSearcher();

@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WAVE.lib", "WAVE.lib\WAVE.l
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WAVE.UnitTests", "WAVE.UnitTests\WAVE.UnitTests.csproj", "{D644B544-0040-4B44-88F8-814BD2005BC4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WAVE.lib.Windows", "WAVE.lib.Windows\WAVE.lib.Windows.csproj", "{348FC9BA-8D8F-4429-AD73-5BB174748D04}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{D644B544-0040-4B44-88F8-814BD2005BC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D644B544-0040-4B44-88F8-814BD2005BC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D644B544-0040-4B44-88F8-814BD2005BC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{348FC9BA-8D8F-4429-AD73-5BB174748D04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{348FC9BA-8D8F-4429-AD73-5BB174748D04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{348FC9BA-8D8F-4429-AD73-5BB174748D04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{348FC9BA-8D8F-4429-AD73-5BB174748D04}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

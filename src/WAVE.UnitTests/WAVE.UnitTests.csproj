@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WAVE.lib.Windows\WAVE.lib.Windows.csproj" />
     <ProjectReference Include="..\WAVE.lib\WAVE.lib.csproj" />
   </ItemGroup>
 
