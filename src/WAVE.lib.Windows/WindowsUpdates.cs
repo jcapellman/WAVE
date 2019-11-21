@@ -19,7 +19,10 @@ namespace WAVE.lib.Windows
 
             var sResult = uSearcher.Search("IsInstalled=0 And IsHidden=0");
 
-            return (from IUpdate update in sResult.Updates select new UpdateListingResponseItem { Name = update.Title }).ToList();
+            return (from IUpdate update in sResult.Updates select new UpdateListingResponseItem { 
+                Name = update.Title, 
+                UpdateType = update.Type.ToString(), 
+                Description = update.Description }).ToList();
         }
 
         public override List<string> GetUpdateNameOnlyList() => GetUpdateList().Select(a => a.Name).ToList();
