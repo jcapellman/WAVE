@@ -2,7 +2,7 @@
 {
     public class UpdateListingResponseItem
     {
-        public string Description;
+        public string Description { get; set; }
 
         public string Name { get; set; }
 
