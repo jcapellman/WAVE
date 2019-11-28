@@ -20,6 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WAVE.lib.Linux\WAVE.lib.Linux.csproj" />
+    <ProjectReference Include="..\WAVE.lib.MacOS\WAVE.lib.MacOS.csproj" />
     <ProjectReference Include="..\WAVE.lib.Windows\WAVE.lib.Windows.csproj" />
     <ProjectReference Include="..\WAVE.lib\WAVE.lib.csproj" />
   </ItemGroup>
