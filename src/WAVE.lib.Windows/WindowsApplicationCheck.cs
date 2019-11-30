@@ -18,10 +18,7 @@ namespace WAVE.lib.Windows
             {
                 foreach (string subkey_name in key.GetSubKeyNames())
                 {
-                    using (RegistryKey subkey = key.OpenSubKey(subkey_name))
-                    {
-                        appNames.Add(subkey.GetValue("DisplayName").ToString());
-                    }
+                    appNames.Add(subkey_name);
                 }
             }
 
