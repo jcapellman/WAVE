@@ -10,16 +10,13 @@ namespace WAVE.lib.Windows
     {
         public override List<string> GetInstalledApplicationsNameOnly()
         {
-            string registry_key = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall";
+            const string registryKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall";
 
             var appNames = new List<string>();
 
-            using (RegistryKey key = Registry.LocalMachine.OpenSubKey(registry_key))
+            using (var key = Registry.LocalMachine.OpenSubKey(registryKey))
             {
-                foreach (string subkey_name in key.GetSubKeyNames())
-                {
-                    appNames.Add(subkey_name);
-                }
+                appNames.AddRange(key?.GetSubKeyNames());
             }
 
             return appNames;
