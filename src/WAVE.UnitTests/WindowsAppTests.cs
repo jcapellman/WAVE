@@ -11,7 +11,7 @@ namespace WAVE.UnitTests
         [Fact]
         public void AppList()
         {
-            var appNames = new WindowsApplicationCheck().GetInstalledApplicationsNameOnly();
+            var appNames = new WindowsApplicationCheck().GetInstalledApplications();
 
             Assert.True(appNames.Any());
         }
