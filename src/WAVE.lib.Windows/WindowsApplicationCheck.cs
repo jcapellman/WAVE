@@ -44,47 +44,56 @@ namespace WAVE.lib.Windows
         {
             var results = new List<ApplicationResponseItem>();
 
-            using RegistryKey key = Registry.LocalMachine.OpenSubKey(registryKeyPath);
+            using var key = Registry.LocalMachine.OpenSubKey(registryKeyPath);
 
             if (key == null)
             {
                 return results;
             }
 
-            foreach (var subkeyName in key.GetSubKeyNames())
+            foreach (var subKeyName in key.GetSubKeyNames())
             {
-                using var subKey = key.OpenSubKey(subkeyName);
-
-                if (subKey == null)
+                try
                 {
-                    continue;
-                }
+                    using var subKey = key.OpenSubKey(subKeyName);
 
-                var item = new ApplicationResponseItem
-                {
-                    Name = subKey.GetValue("DisplayName")?.ToString(),
-                    Version = ParseVersion(subKey.GetValue("Version")?.ToString(), subKey.GetValue("DisplayVersion")?.ToString(), subKey.GetValue("VersionMajor")?.ToString(), subKey.GetValue("VersionMinor")?.ToString()),
-                    Vendor = subKey.GetValue("Publisher")?.ToString(),
-                    InstallLocation = subKey.GetValue("InstallLocation")?.ToString(),
-                    InstallDate = ParseDate(subKey.GetValue("InstallDate")?.ToString())
-                };
-
-                if (item.InstallDate == null && !string.IsNullOrEmpty(item.InstallLocation))
-                {
-                    if (Directory.Exists(item.InstallLocation))
+                    if (subKey == null)
                     {
-                        var directoryInfo = new DirectoryInfo(item.InstallLocation);
-
-                        item.InstallDate = directoryInfo.CreationTime;
+                        continue;
                     }
-                }
 
-                if (string.IsNullOrEmpty(item.Name))
+                    var item = new ApplicationResponseItem
+                    {
+                        Name = subKey.GetValue("DisplayName")?.ToString(),
+                        Version = ParseVersion(subKey.GetValue("Version")?.ToString(),
+                            subKey.GetValue("DisplayVersion")?.ToString(), subKey.GetValue("VersionMajor")?.ToString(),
+                            subKey.GetValue("VersionMinor")?.ToString()),
+                        Vendor = subKey.GetValue("Publisher")?.ToString(),
+                        InstallLocation = subKey.GetValue("InstallLocation")?.ToString(),
+                        InstallDate = ParseDate(subKey.GetValue("InstallDate")?.ToString())
+                    };
+
+                    if (item.InstallDate == null && !string.IsNullOrEmpty(item.InstallLocation))
+                    {
+                        if (Directory.Exists(item.InstallLocation))
+                        {
+                            var directoryInfo = new DirectoryInfo(item.InstallLocation);
+
+                            item.InstallDate = directoryInfo.CreationTime;
+                        }
+                    }
+
+                    if (string.IsNullOrEmpty(item.Name))
+                    {
+                        continue;
+                    }
+
+                    results.Add(item);
+                }
+                catch (Exception ex)
                 {
-                    continue;
+                    Console.WriteLine($"Error when parsing {subKeyName}: {ex}");
                 }
-
-                results.Add(item);
             }
 
             return results;
@@ -92,12 +101,16 @@ namespace WAVE.lib.Windows
 
         public override List<ApplicationResponseItem> GetInstalledApplications()
         {
-            var apps = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall";
-            var otherApps = @"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall";
+            const string apps = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall";
 
             var results = GetApps(apps);
 
-            results.AddRange(GetApps(otherApps));
+            if (Environment.Is64BitOperatingSystem)
+            {
+                const string thirtyTwoBitApps = @"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall";
+
+                results.AddRange(GetApps(thirtyTwoBitApps));
+            }
 
             var filteredResults = new List<ApplicationResponseItem>();
 
