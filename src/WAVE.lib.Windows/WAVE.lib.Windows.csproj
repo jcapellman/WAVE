@@ -2,6 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>0.1.0</Version>
+    <Authors>Jarred Capellman</Authors>
+    <Company>Jarred Capellman</Company>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/jcapellman/WAVE</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/jcapellman/WAVE</RepositoryUrl>
+    <PackageTags>application vulnerability, software inventory</PackageTags>
+    <Description>Retrieves Installed Applications from a Windows Host, available Updates and in the future mapping these to CVEs</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,5 +30,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="5.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 </Project>
