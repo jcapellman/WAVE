@@ -2,5 +2,19 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>0.1.0</Version>
+    <Authors>Jarred Capllman</Authors>
+    <Description>Base Library defining the interfaces - should not be directly referenced</Description>
+    <PackageProjectUrl>https://github.com/jcapellman/WAVE</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/jcapellman/WAVE</RepositoryUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 </Project>
