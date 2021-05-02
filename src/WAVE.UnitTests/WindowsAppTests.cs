@@ -1,11 +1,12 @@
 ﻿using WAVE.lib.Windows;
 
 using System.Linq;
-
+using System.Runtime.Versioning;
 using Xunit;
 
 namespace WAVE.UnitTests
 {
+    [SupportedOSPlatform("windows")]
     public class WindowsAppTests
     {
         [Fact]
