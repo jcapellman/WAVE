@@ -40,7 +40,7 @@ namespace WAVE.lib.Windows
             return string.IsNullOrEmpty(majorVersion) ? "" : $"{majorVersion}.{minorVersion}";
         }
 
-        private List<ApplicationResponseItem> GetApps(string registryKeyPath)
+        private static List<ApplicationResponseItem> GetApps(string registryKeyPath)
         {
             var results = new List<ApplicationResponseItem>();
 

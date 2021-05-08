@@ -15,6 +15,10 @@ namespace WAVE.UnitTests
             var appNames = new WindowsApplicationCheck().GetInstalledApplications();
 
             Assert.True(appNames.Any());
+
+            Assert.Contains(appNames, a => !string.IsNullOrEmpty(a.Version));
+
+            Assert.Contains(appNames, a => !string.IsNullOrEmpty(a.Vendor));
         }
     }
 }
