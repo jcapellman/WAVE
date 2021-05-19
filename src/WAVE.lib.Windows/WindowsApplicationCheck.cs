@@ -22,7 +22,18 @@ namespace WAVE.lib.Windows
                 return null;
             }
 
-            return value.Contains('/') ? Convert.ToDateTime(value) : DateTime.ParseExact(value, "yyyyMMdd", CultureInfo.InvariantCulture);
+            try
+            {
+                return value.Contains('/')
+                    ? Convert.ToDateTime(value)
+                    : DateTime.ParseExact(value, "yyyyMMdd", CultureInfo.InvariantCulture);
+            }
+            catch (FormatException)
+            {
+                // TODO: LOG Invalid Date
+
+                return null;
+            }
         }
         
         private static string ParseVersion(string version, string displayVersion, string majorVersion, string minorVersion)
@@ -37,7 +48,7 @@ namespace WAVE.lib.Windows
                 return displayVersion;
             }
 
-            return string.IsNullOrEmpty(majorVersion) ? "" : $"{majorVersion}.{minorVersion}";
+            return string.IsNullOrEmpty(majorVersion) || string.IsNullOrEmpty(minorVersion) ? "" : $"{majorVersion}.{minorVersion}";
         }
 
         private static List<ApplicationResponseItem> GetApps(string registryKeyPath)
