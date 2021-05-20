@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 
+using Microsoft.Extensions.Logging;
+
 using WAVE.lib.Applications.Base;
 using WAVE.lib.Applications.Containers;
 
@@ -10,6 +12,8 @@ namespace WAVE.lib.Linux
     {
         private const string APT_METHOD = "apt";
         private const string APT_PARAMETERS = "--list installed";
+
+        public LinuxApplicationCheck(ILogger logger = null) : base(logger) { }
 
         private static List<string> RunTerminalProcess(string process, string arguments)
         {
