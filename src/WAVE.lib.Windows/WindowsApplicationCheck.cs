@@ -84,21 +84,25 @@ namespace WAVE.lib.Windows
                         InstallDate = ParseDate(subKey.GetValue("InstallDate")?.ToString())
                     };
 
-                    if (item.InstallDate == null && !string.IsNullOrEmpty(item.InstallLocation))
-                    {
-                        if (Directory.Exists(item.InstallLocation))
-                        {
-                            var directoryInfo = new DirectoryInfo(item.InstallLocation);
-
-                            item.InstallDate = directoryInfo.CreationTime;
-                        }
-                    }
-
                     if (string.IsNullOrEmpty(item.Name))
                     {
                         continue;
                     }
 
+                    if (item.InstallDate == null && !string.IsNullOrEmpty(item.InstallLocation) && Directory.Exists(item.InstallLocation))
+                    {
+                        try
+                        {
+                            var directoryInfo = new DirectoryInfo(item.InstallLocation);
+
+                            item.InstallDate = directoryInfo?.CreationTime;
+                        }
+                        catch (Exception)
+                        {
+                            // TODO: Log exception
+                        }
+                    }
+                    
                     results.Add(item);
                 }
                 catch (Exception ex)
