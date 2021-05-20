@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Versioning;
 
+using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 
 using WAVE.lib.Applications.Base;
@@ -15,7 +16,9 @@ namespace WAVE.lib.Windows
     [SupportedOSPlatform("windows")]
     public class WindowsApplicationCheck : BaseApplicationCheck
     {
-        private static DateTime? ParseDate(string value)
+        public WindowsApplicationCheck(ILogger logger = null) : base(logger) { }
+
+        private DateTime? ParseDate(string value)
         {
             if (string.IsNullOrEmpty(value))
             {
@@ -28,9 +31,9 @@ namespace WAVE.lib.Windows
                     ? Convert.ToDateTime(value)
                     : DateTime.ParseExact(value, "yyyyMMdd", CultureInfo.InvariantCulture);
             }
-            catch (FormatException)
+            catch (FormatException fex)
             {
-                // TODO: LOG Invalid Date
+                LogError($"Error converting ({value}) to a date: {fex}");
 
                 return null;
             }
@@ -51,7 +54,7 @@ namespace WAVE.lib.Windows
             return string.IsNullOrEmpty(majorVersion) || string.IsNullOrEmpty(minorVersion) ? "" : $"{majorVersion}.{minorVersion}";
         }
 
-        private static List<ApplicationResponseItem> GetApps(string registryKeyPath)
+        private List<ApplicationResponseItem> GetApps(string registryKeyPath)
         {
             var results = new List<ApplicationResponseItem>();
 
@@ -97,17 +100,17 @@ namespace WAVE.lib.Windows
 
                             item.InstallDate = directoryInfo?.CreationTime;
                         }
-                        catch (Exception)
+                        catch (Exception iex)
                         {
-                            // TODO: Log exception
+                            LogError($"Error when getting the install date from ({item.InstallLocation}): {iex}");
                         }
                     }
                     
                     results.Add(item);
                 }
                 catch (Exception ex)
-                {
-                    Console.WriteLine($"Error when parsing {subKeyName}: {ex}");
+                { 
+                    LogError($"Error when parsing {subKeyName}: {ex}");
                 }
             }
 
