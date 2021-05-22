@@ -87,6 +87,8 @@ namespace WAVE.lib.Windows
                         InstallDate = ParseDate(subKey.GetValue("InstallDate")?.ToString())
                     };
 
+                    LogDebug($"{subKeyName} had an empty Name - ignoring");
+
                     if (string.IsNullOrEmpty(item.Name))
                     {
                         continue;
@@ -99,6 +101,8 @@ namespace WAVE.lib.Windows
                             var directoryInfo = new DirectoryInfo(item.InstallLocation);
 
                             item.InstallDate = directoryInfo?.CreationTime;
+
+                            LogDebug($"Obtained install date from {item.InstallLocation} ({item.InstallDate ?? null})");
                         }
                         catch (Exception iex)
                         {
@@ -122,9 +126,11 @@ namespace WAVE.lib.Windows
             const string apps = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall";
 
             var results = GetApps(apps);
-
+            
             if (Environment.Is64BitOperatingSystem)
             {
+                LogDebug("64bit Operating System Detected - querying 32 bit applications");
+                
                 const string thirtyTwoBitApps = @"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall";
 
                 results.AddRange(GetApps(thirtyTwoBitApps));
@@ -138,6 +144,8 @@ namespace WAVE.lib.Windows
                 filteredResults.Add(result);
             }
 
+            LogDebug($"{filteredResults.Count} Applications found");
+            
             return filteredResults.OrderBy(a => a.Name).ToList();
         }
     }
