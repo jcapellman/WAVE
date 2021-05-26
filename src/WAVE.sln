@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WAVE.lib.Linux", "WAVE.lib.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WAVE.lib.MacOS", "WAVE.lib.MacOS\WAVE.lib.MacOS.csproj", "{094BDD71-8534-43F1-B1C8-B5A92E115F9D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WAVE.cmd", "WAVE.cmd\WAVE.cmd.csproj", "{C72C9414-C261-49A5-B9D4-EED52E558011}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WAVE.cmd", "WAVE.cmd\WAVE.cmd.csproj", "{C72C9414-C261-49A5-B9D4-EED52E558011}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
