@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <Authors>Jarred Capellman</Authors>
     <Company>Jarred Capellman</Company>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
