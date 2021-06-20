@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.Versioning;
+using System.Threading.Tasks;
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
@@ -56,16 +58,16 @@ namespace WAVE.lib.Windows
 
         private List<ApplicationResponseItem> GetApps(string registryKeyPath)
         {
-            var results = new List<ApplicationResponseItem>();
+            var results = new ConcurrentBag<ApplicationResponseItem>();
 
             using var key = Registry.LocalMachine.OpenSubKey(registryKeyPath);
 
             if (key == null)
             {
-                return results;
+                return results.ToList();
             }
 
-            foreach (var subKeyName in key.GetSubKeyNames())
+            Parallel.ForEach(key.GetSubKeyNames(), subKeyName =>
             {
                 try
                 {
@@ -73,7 +75,7 @@ namespace WAVE.lib.Windows
 
                     if (subKey == null)
                     {
-                        continue;
+                        return;
                     }
 
                     var item = new ApplicationResponseItem
@@ -91,7 +93,7 @@ namespace WAVE.lib.Windows
 
                     if (string.IsNullOrEmpty(item.Name))
                     {
-                        continue;
+                        return;
                     }
 
                     if (item.InstallDate == null && !string.IsNullOrEmpty(item.InstallLocation) && Directory.Exists(item.InstallLocation))
@@ -109,16 +111,16 @@ namespace WAVE.lib.Windows
                             LogError($"Error when getting the install date from ({item.InstallLocation}): {iex}");
                         }
                     }
-                    
+
                     results.Add(item);
                 }
                 catch (Exception ex)
-                { 
+                {
                     LogError($"Error when parsing {subKeyName}: {ex}");
                 }
-            }
+            });
 
-            return results;
+            return results.ToList();
         }
 
         public override List<ApplicationResponseItem> GetInstalledApplications()
