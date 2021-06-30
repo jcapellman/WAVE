@@ -3,9 +3,9 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>0.1.0</Version>
+    <Version>0.2.0</Version>
     <Authors>Jarred Capllman</Authors>
-    <Description>Base Library defining the interfaces - should not be directly referenced</Description>
+    <Description>Platform Agnostic Application Library</Description>
     <PackageProjectUrl>https://github.com/jcapellman/WAVE</PackageProjectUrl>
     <RepositoryUrl>https://github.com/jcapellman/WAVE</RepositoryUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
@@ -20,5 +20,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="5.0.2" />
   </ItemGroup>
 </Project>
