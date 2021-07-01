@@ -1,8 +1,7 @@
-﻿using WAVE.lib.Windows;
-
-using System.Linq;
+﻿using System.Linq;
 using System.Runtime.Versioning;
 using Xunit;
+using WAVE.lib.PlatformImplementations.Windows;
 
 namespace WAVE.UnitTests
 {

@@ -13,7 +13,7 @@ using Microsoft.Win32;
 using WAVE.lib.Applications.Base;
 using WAVE.lib.Applications.Containers;
 
-namespace WAVE.lib.Windows
+namespace WAVE.lib.PlatformImplementations.Windows
 {
     [SupportedOSPlatform("windows")]
     public class WindowsApplicationCheck : BaseApplicationCheck
@@ -40,7 +40,7 @@ namespace WAVE.lib.Windows
                 return null;
             }
         }
-        
+
         private static string ParseVersion(string version, string displayVersion, string majorVersion, string minorVersion)
         {
             if (!string.IsNullOrEmpty(version))
@@ -128,11 +128,11 @@ namespace WAVE.lib.Windows
             const string apps = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall";
 
             var results = GetApps(apps);
-            
+
             if (Environment.Is64BitOperatingSystem)
             {
                 LogDebug("64bit Operating System Detected - querying 32 bit applications");
-                
+
                 const string thirtyTwoBitApps = @"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall";
 
                 results.AddRange(GetApps(thirtyTwoBitApps));
@@ -140,14 +140,14 @@ namespace WAVE.lib.Windows
 
             var filteredResults = new List<ApplicationResponseItem>();
 
-            foreach (var result in results.Where(result => 
+            foreach (var result in results.Where(result =>
                 !filteredResults.Any(a => a.Name == result.Name && a.InstallLocation == result.InstallLocation)))
             {
                 filteredResults.Add(result);
             }
 
             LogDebug($"{filteredResults.Count} Applications found");
-            
+
             return filteredResults.OrderBy(a => a.Name).ToList();
         }
     }

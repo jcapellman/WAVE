@@ -3,8 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Versioning;
 using System.Text.Json;
-
-using WAVE.lib.Windows;
+using WAVE.lib.PlatformImplementations.Windows;
 
 namespace WAVE.cmd
 {

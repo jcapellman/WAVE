@@ -1,20 +1,19 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 
 using Microsoft.Extensions.Logging;
 
 using WAVE.lib.Applications.Base;
 using WAVE.lib.Applications.Containers;
 
-namespace WAVE.lib.Linux
+namespace WAVE.lib.PlatformImplementations.MacOS
 {
-    public class LinuxApplicationCheck : BaseApplicationCheck
+    public class MacOsApplicationCheck : BaseApplicationCheck
     {
-        private const string APT_METHOD = "apt";
-        private const string APT_PARAMETERS = "--list installed";
+        private const string APT_METHOD = "sudo";
+        private const string APT_PARAMETERS = "find / -iname *.app";
 
-        public LinuxApplicationCheck(ILogger logger = null) : base(logger) { }
-        
+        public MacOsApplicationCheck(ILogger logger = null) : base(logger) { }
+
         public override List<ApplicationResponseItem> GetInstalledApplications()
         {
             var lines = RunTerminalProcess(APT_METHOD, APT_PARAMETERS);
