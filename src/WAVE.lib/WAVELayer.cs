@@ -34,7 +34,7 @@ namespace WAVE.lib
                 _aaEngine = null;
             }
 
-            _aaEngine = new ApplicationAnomalyEngine();
+            _aaEngine = new ApplicationAnomalyEngine(_logger);
 
             _aaEngine.OnAnomalyEvent += _aaEngine_OnAnomalyEvent;
 
@@ -68,8 +68,7 @@ namespace WAVE.lib
                 return new MacOsApplicationCheck(_logger).GetInstalledApplications();
             }
 
-            // TODO: Write macOS and Linux Implementations
-            return new List<ApplicationResponseItem>();
+            throw new PlatformNotSupportedException($"{Environment.OSVersion} is not a currently supported operating system");
         }
     }
 }
