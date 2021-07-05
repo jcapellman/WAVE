@@ -1,17 +1,17 @@
 ﻿using System.Linq;
-using System.Runtime.Versioning;
+
 using Xunit;
-using WAVE.lib.PlatformImplementations.Windows;
+
+using WAVE.lib;
 
 namespace WAVE.UnitTests
 {
-    [SupportedOSPlatform("windows")]
     public class WindowsAppTests
     {
         [Fact]
         public void AppList()
         {
-            var appNames = new WindowsApplicationCheck().GetInstalledApplications();
+            var appNames = new WAVELayer().GetInstalledApplications();
 
             Assert.True(appNames.Any());
 
