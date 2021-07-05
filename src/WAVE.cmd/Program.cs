@@ -1,18 +1,17 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Runtime.Versioning;
 using System.Text.Json;
-using WAVE.lib.PlatformImplementations.Windows;
+
+using WAVE.lib;
 
 namespace WAVE.cmd
 {
     class Program
     {
-        [SupportedOSPlatform("windows")]
         static void Main(string[] args)
         {
-            var apps = new WindowsApplicationCheck().GetInstalledApplications();
+            var apps = new WAVELayer().GetInstalledApplications();
 
             File.WriteAllText("inventory.json", string.Join(Environment.NewLine, apps.Select(a => JsonSerializer.Serialize(a))));
 
