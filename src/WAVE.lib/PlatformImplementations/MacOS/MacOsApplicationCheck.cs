@@ -7,7 +7,7 @@ using WAVE.lib.Applications.Containers;
 
 namespace WAVE.lib.PlatformImplementations.MacOS
 {
-    public class MacOsApplicationCheck : BaseApplicationCheck
+    internal class MacOsApplicationCheck : BaseApplicationCheck
     {
         private const string APT_METHOD = "sudo";
         private const string APT_PARAMETERS = "find / -iname *.app";
