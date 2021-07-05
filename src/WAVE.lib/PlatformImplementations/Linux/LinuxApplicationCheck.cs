@@ -7,7 +7,7 @@ using WAVE.lib.Applications.Containers;
 
 namespace WAVE.lib.PlatformImplementations.Linux
 {
-    public class LinuxApplicationCheck : BaseApplicationCheck
+    internal class LinuxApplicationCheck : BaseApplicationCheck
     {
         private const string APT_METHOD = "apt";
         private const string APT_PARAMETERS = "--list installed";
