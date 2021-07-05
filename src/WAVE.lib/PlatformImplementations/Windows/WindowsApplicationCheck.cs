@@ -16,7 +16,7 @@ using WAVE.lib.Applications.Containers;
 namespace WAVE.lib.PlatformImplementations.Windows
 {
     [SupportedOSPlatform("windows")]
-    public class WindowsApplicationCheck : BaseApplicationCheck
+    internal class WindowsApplicationCheck : BaseApplicationCheck
     {
         public WindowsApplicationCheck(ILogger logger = null) : base(logger) { }
 
