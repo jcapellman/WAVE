@@ -14,15 +14,22 @@ namespace WAVE.lib
 
         private List<AnomalyListener> _listeners = new();
 
+        private const int LOOP_WAIT_SECONDS = 60;
+
         public ApplicationAnomalyEngine(ILogger logger = null) : base(logger) { }
-    
-        public void StartEngine()
+
+        public void StartEngine(int loopWaitSeconds = LOOP_WAIT_SECONDS)
         {
             LogDebug("Starting Anomaly Engine");
 
-            foreach (var listener in _listeners)
+            while (true)
             {
-                            
+                foreach (var listener in _listeners)
+                {
+                    listener.Run();
+                }
+
+                System.Threading.Tasks.Task.Delay(System.TimeSpan.FromSeconds(loopWaitSeconds));
             }
         }
 
