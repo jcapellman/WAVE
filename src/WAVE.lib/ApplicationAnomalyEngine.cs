@@ -36,6 +36,11 @@ namespace WAVE.lib
         public void StopEngine()
         {
             LogDebug("Stopping Anomaly Engine");
+
+            foreach (var listener in _listeners)
+            {
+                listener.Stop();
+            }
         }
     }
 }

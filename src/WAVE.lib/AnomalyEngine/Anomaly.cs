@@ -5,5 +5,7 @@
         public string Name { get; internal set;  }
 
         public void Run() { }
+
+        public void Stop() { }
     }
 }
