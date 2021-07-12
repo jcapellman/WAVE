@@ -7,5 +7,10 @@
         public void Run() { }
 
         public void Stop() { }
+
+        public AnomalyListener(string scriptContent)
+        {
+            // TODO: Parse JSON
+        }
     }
 }
