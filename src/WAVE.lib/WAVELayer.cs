@@ -24,7 +24,7 @@ namespace WAVE.lib
 
         public EventHandler<ApplicationAnomaliesItem> OnApplicationAnomaly;
 
-        public void StartAnomalyDetection()
+        public void StartAnomalyDetection(string anomalyDefinitionPath)
         {
             if (_aaEngine != null)
             {
@@ -37,6 +37,8 @@ namespace WAVE.lib
             _aaEngine = new ApplicationAnomalyEngine(_logger);
 
             _aaEngine.OnAnomalyEvent += _aaEngine_OnAnomalyEvent;
+
+            _aaEngine.InitializeListeners(anomalyDefinitionPath);
 
             _aaEngine.StartEngine();
         }
