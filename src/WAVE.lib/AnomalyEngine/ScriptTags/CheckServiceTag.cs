@@ -6,16 +6,19 @@ using WAVE.lib.AnomalyEngine.ScriptTags.Base;
 
 namespace WAVE.lib.AnomalyEngine.ScriptTags
 {
-    [SupportedOSPlatform("windows")]
-    public class CheckServiceTag : BaseScriptTags
+    public class ArgumentCheckService : ScriptArguments
     {
-        protected override string[] ValidArguments => new[] { "servicename" };
+        public string ServiceName { get; set; }
+    }
 
-        public override string Run(string[] arguments)
+    [SupportedOSPlatform("windows")]
+    public class CheckServiceTag : BaseScriptTags<ArgumentCheckService>
+    {
+        protected override string RunTag(ArgumentCheckService argumentClass)
         {
             try
             {
-                using var sv = new ServiceController(arguments[1]);
+                using var sv = new ServiceController(argumentClass.ServiceName);
 
                 if (sv.Status == ServiceControllerStatus.Running)
                 {

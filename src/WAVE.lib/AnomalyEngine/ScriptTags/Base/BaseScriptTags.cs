@@ -1,35 +1,36 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace WAVE.lib.AnomalyEngine.ScriptTags.Base
 {
-    public abstract class BaseScriptTags
+    public class ScriptArguments
     {
-        private readonly string[] _arguments;
 
-        protected abstract string[] ValidArguments { get; }
+    }
 
-        private bool ValidateArguments(string[] arguments)
+    public abstract class BaseScriptTags<T> where T : ScriptArguments
+    {
+        public string RunAndParse(string[] arguments)
         {
-            for (var x = 0; x < arguments.Length; x+=2)
-            {
-                if (!ValidArguments.Contains(arguments[x].ToLowerInvariant())) {
-                    return false;
+            var obj = Activator.CreateInstance<T>();
+
+            var properties = obj.GetType().GetProperties();
+
+            for (var x =0; x < arguments.Length; x+=2) {                             
+                var property = properties.FirstOrDefault(a => a.Name.Equals(arguments[x], StringComparison.InvariantCultureIgnoreCase));
+
+                if (property == null)
+                {
+                    // TODO LOG
+                    continue;
                 }
+
+                property.SetValue(obj, arguments[x + 1]);
             }
 
-            return true;
+            return RunTag(obj);
         }
 
-        public string ParseArguments(string[] arguments)
-        {
-            if (!ValidateArguments(arguments))
-            {
-                return null;
-            }
-
-            return Run(arguments);
-        }
-
-        public abstract string Run(string[] arguments);
+        protected abstract string RunTag(T argumentClass);
     }
 }
