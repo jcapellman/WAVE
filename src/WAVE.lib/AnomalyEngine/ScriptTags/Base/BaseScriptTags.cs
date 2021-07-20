@@ -12,6 +12,11 @@ namespace WAVE.lib.AnomalyEngine.ScriptTags.Base
     {
         public string RunAndParse(string[] arguments)
         {
+            if (arguments.Length % 2 != 0)
+            {
+                throw new ArgumentException($"Invalid number of arguments ({arguments.Length} provided)");
+            }
+
             var obj = Activator.CreateInstance<T>();
 
             var properties = obj.GetType().GetProperties();
