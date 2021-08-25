@@ -56,15 +56,15 @@ namespace WAVE.lib.PlatformImplementations.Windows
             return string.IsNullOrEmpty(majorVersion) || string.IsNullOrEmpty(minorVersion) ? "" : $"{majorVersion}.{minorVersion}";
         }
 
-        private List<ApplicationResponseItem> GetApps(string registryKeyPath)
+        private List<ApplicationResponseItem> GetApps(string registryKeyPath, string appendingSuffix)
         {
-            var results = new ConcurrentBag<ApplicationResponseItem>();
+            var results = new ConcurrentDictionary<string, ApplicationResponseItem>();
 
             using var key = Registry.LocalMachine.OpenSubKey(registryKeyPath);
 
             if (key == null)
             {
-                return results.ToList();
+                return results.Values.ToList();
             }
 
             Parallel.ForEach(key.GetSubKeyNames(), subKeyName =>
@@ -80,7 +80,7 @@ namespace WAVE.lib.PlatformImplementations.Windows
 
                     var item = new ApplicationResponseItem
                     {
-                        Name = subKey.GetValue("DisplayName")?.ToString(),
+                        Name = $"{subKey.GetValue("DisplayName")?.ToString()} - ({appendingSuffix})",
                         Version = ParseVersion(subKey.GetValue("Version")?.ToString(),
                             subKey.GetValue("DisplayVersion")?.ToString(), subKey.GetValue("VersionMajor")?.ToString(),
                             subKey.GetValue("VersionMinor")?.ToString()),
@@ -112,7 +112,7 @@ namespace WAVE.lib.PlatformImplementations.Windows
                         }
                     }
 
-                    results.Add(item);
+                    results.TryAdd(item.Name, item);
                 }
                 catch (Exception ex)
                 {
@@ -120,14 +120,14 @@ namespace WAVE.lib.PlatformImplementations.Windows
                 }
             });
 
-            return results.ToList();
+            return results.Values.ToList();
         }
 
         public override List<ApplicationResponseItem> GetInstalledApplications()
         {
             const string apps = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall";
 
-            var results = GetApps(apps);
+            var results = GetApps(apps, "x64");
 
             if (Environment.Is64BitOperatingSystem)
             {
@@ -135,7 +135,7 @@ namespace WAVE.lib.PlatformImplementations.Windows
 
                 const string thirtyTwoBitApps = @"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall";
 
-                results.AddRange(GetApps(thirtyTwoBitApps));
+                results.AddRange(GetApps(thirtyTwoBitApps, "x86"));
             }
 
             var filteredResults = new List<ApplicationResponseItem>();
