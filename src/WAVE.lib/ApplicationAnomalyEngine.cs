@@ -13,7 +13,7 @@ namespace WAVE.lib
     {
         public event EventHandler<ApplicationAnomaliesItem> OnAnomalyEvent;
 
-        private List<AnomalyListener> _listeners = new();
+        private readonly List<AnomalyListener> _listeners = new();
 
         private const int LOOP_WAIT_SECONDS = 60;
 
@@ -56,7 +56,7 @@ namespace WAVE.lib
             {
                 foreach (var listener in _listeners)
                 {
-                    listener.Run();
+                    AnomalyListener.Run(listener);
                 }
 
                 System.Threading.Tasks.Task.Delay(System.TimeSpan.FromSeconds(loopWaitSeconds));
@@ -69,7 +69,7 @@ namespace WAVE.lib
 
             foreach (var listener in _listeners)
             {
-                listener.Stop();
+                AnomalyListener.Stop(listener);
             }
         }
     }

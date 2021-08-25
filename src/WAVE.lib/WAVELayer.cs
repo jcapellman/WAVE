@@ -28,7 +28,7 @@ namespace WAVE.lib
         {
             if (_aaEngine != null)
             {
-                _aaEngine.OnAnomalyEvent -= _aaEngine_OnAnomalyEvent;
+                _aaEngine.OnAnomalyEvent -= AaEngine_OnAnomalyEvent;
                 _aaEngine.StopEngine();
 
                 _aaEngine = null;
@@ -36,14 +36,14 @@ namespace WAVE.lib
 
             _aaEngine = new ApplicationAnomalyEngine(_logger);
 
-            _aaEngine.OnAnomalyEvent += _aaEngine_OnAnomalyEvent;
+            _aaEngine.OnAnomalyEvent += AaEngine_OnAnomalyEvent;
 
             _aaEngine.InitializeListeners(anomalyDefinitionPath);
 
             _aaEngine.StartEngine();
         }
 
-        private void _aaEngine_OnAnomalyEvent(object sender, ApplicationAnomaliesItem e)
+        private void AaEngine_OnAnomalyEvent(object sender, ApplicationAnomaliesItem e)
         {
             OnApplicationAnomaly?.Invoke(this, e);
         }

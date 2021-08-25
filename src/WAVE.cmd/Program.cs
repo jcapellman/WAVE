@@ -11,6 +11,11 @@ namespace WAVE.cmd
     {
         static void Main(string[] args)
         {
+            if (args is null)
+            {
+                throw new ArgumentNullException(nameof(args));
+            }
+
             var apps = new WAVELayer().GetInstalledApplications();
 
             File.WriteAllText("inventory.json", string.Join(Environment.NewLine, apps.Select(a => JsonSerializer.Serialize(a))));

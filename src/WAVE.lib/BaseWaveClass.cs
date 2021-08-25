@@ -11,14 +11,20 @@ namespace WAVE.lib
             _logger = logger;
         }
 
-        protected void LogError(string message)
-        {
-            _logger?.LogError(message);
-        }
+        protected void LogError(string logMessage) => Log(LogLevel.Error, logMessage);
 
-        protected void LogDebug(string message)
+        protected void LogDebug(string logMessage) => Log(LogLevel.Debug, logMessage);
+
+        private void Log(LogLevel logLevel, string logMessage)
         {
-            _logger?.LogDebug(message);
+            if (_logger == null)
+            {
+                return;
+            }
+
+#pragma warning disable CA2254 // Template should be a static expression
+            _logger.Log(logLevel, logMessage, null);
+#pragma warning restore CA2254 // Template should be a static expression
         }
     }
 }
