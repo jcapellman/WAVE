@@ -11,21 +11,21 @@ namespace WAVE.lib.AnomalyEngine.ScriptTags
         public string ServiceName { get; set; }
     }
 
-    [SupportedOSPlatform("windows")]
     public class CheckServiceTag : BaseScriptTags<ArgumentCheckService>
     {
         protected override string RunTag(ArgumentCheckService argumentClass)
         {
             try
             {
-                using var sv = new ServiceController(argumentClass.ServiceName);
-
-                if (sv.Status == ServiceControllerStatus.Running)
+                using (var sv = new ServiceController(argumentClass.ServiceName))
                 {
-                    return string.Empty;
-                }
+                    if (sv.Status == ServiceControllerStatus.Running)
+                    {
+                        return string.Empty;
+                    }
 
-                return $"Service is not running, it's status is {sv.Status}";
+                    return $"Service is not running, it's status is {sv.Status}";
+                }
             }
             catch (Exception ex)
             {

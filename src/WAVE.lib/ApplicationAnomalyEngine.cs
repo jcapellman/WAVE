@@ -13,7 +13,7 @@ namespace WAVE.lib
     {
         public event EventHandler<ApplicationAnomaliesItem> OnAnomalyEvent;
 
-        private readonly List<AnomalyListener> _listeners = new();
+        private readonly List<AnomalyListener> _listeners = new List<AnomalyListener>();
 
         private const int LOOP_WAIT_SECONDS = 60;
 

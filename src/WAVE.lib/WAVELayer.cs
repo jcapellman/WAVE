@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Runtime.InteropServices;
 using Microsoft.Extensions.Logging;
 
 using WAVE.lib.Applications.Containers;
@@ -55,17 +55,17 @@ namespace WAVE.lib
 
         public List<ApplicationResponseItem> GetInstalledApplications()
         {
-            if (OperatingSystem.IsWindows())
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 return new WindowsApplicationCheck(_logger).GetInstalledApplications();
             }
 
-            if (OperatingSystem.IsLinux())
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
                 return new LinuxApplicationCheck(_logger).GetInstalledApplications();
             }
 
-            if (OperatingSystem.IsMacOS())
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
                 return new MacOsApplicationCheck(_logger).GetInstalledApplications();
             }

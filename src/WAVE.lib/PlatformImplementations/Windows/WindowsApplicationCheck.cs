@@ -15,7 +15,6 @@ using WAVE.lib.Applications.Containers;
 
 namespace WAVE.lib.PlatformImplementations.Windows
 {
-    [SupportedOSPlatform("windows")]
     internal class WindowsApplicationCheck : BaseApplicationCheck
     {
         public WindowsApplicationCheck(ILogger logger = null) : base(logger) { }
@@ -60,67 +59,70 @@ namespace WAVE.lib.PlatformImplementations.Windows
         {
             var results = new ConcurrentDictionary<string, ApplicationResponseItem>();
 
-            using var key = Registry.LocalMachine.OpenSubKey(registryKeyPath);
+            using (var key = Registry.LocalMachine.OpenSubKey(registryKeyPath)) {
 
-            if (key == null)
-            {
+                if (key == null)
+                {
+                    return results.Values.ToList();
+                }
+
+                Parallel.ForEach(key.GetSubKeyNames(), subKeyName =>
+                {
+                    try
+                    {
+                        using (var subKey = key.OpenSubKey(subKeyName))
+                        {
+
+                            if (subKey == null)
+                            {
+                                return;
+                            }
+
+                            var item = new ApplicationResponseItem
+                            {
+                                Name = $"{subKey.GetValue("DisplayName")?.ToString()} - ({appendingSuffix})",
+                                Version = ParseVersion(subKey.GetValue("Version")?.ToString(),
+                                    subKey.GetValue("DisplayVersion")?.ToString(), subKey.GetValue("VersionMajor")?.ToString(),
+                                    subKey.GetValue("VersionMinor")?.ToString()),
+                                Vendor = subKey.GetValue("Publisher")?.ToString(),
+                                InstallLocation = subKey.GetValue("InstallLocation")?.ToString(),
+                                InstallDate = ParseDate(subKey.GetValue("InstallDate")?.ToString())
+                            };
+
+                            LogDebug($"{subKeyName} had an empty Name - ignoring");
+
+                            if (string.IsNullOrEmpty(item.Name))
+                            {
+                                return;
+                            }
+
+                            if (item.InstallDate == null && !string.IsNullOrEmpty(item.InstallLocation) && Directory.Exists(item.InstallLocation))
+                            {
+                                try
+                                {
+                                    var directoryInfo = new DirectoryInfo(item.InstallLocation);
+
+                                    item.InstallDate = directoryInfo?.CreationTime;
+
+                                    LogDebug($"Obtained install date from {item.InstallLocation} ({item.InstallDate ?? null})");
+                                }
+                                catch (Exception iex)
+                                {
+                                    LogError($"Error when getting the install date from ({item.InstallLocation}): {iex}");
+                                }
+                            }
+
+                            results.TryAdd(item.Name, item);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        LogError($"Error when parsing {subKeyName}: {ex}");
+                    }
+                });
+
                 return results.Values.ToList();
             }
-
-            Parallel.ForEach(key.GetSubKeyNames(), subKeyName =>
-            {
-                try
-                {
-                    using var subKey = key.OpenSubKey(subKeyName);
-
-                    if (subKey == null)
-                    {
-                        return;
-                    }
-
-                    var item = new ApplicationResponseItem
-                    {
-                        Name = $"{subKey.GetValue("DisplayName")?.ToString()} - ({appendingSuffix})",
-                        Version = ParseVersion(subKey.GetValue("Version")?.ToString(),
-                            subKey.GetValue("DisplayVersion")?.ToString(), subKey.GetValue("VersionMajor")?.ToString(),
-                            subKey.GetValue("VersionMinor")?.ToString()),
-                        Vendor = subKey.GetValue("Publisher")?.ToString(),
-                        InstallLocation = subKey.GetValue("InstallLocation")?.ToString(),
-                        InstallDate = ParseDate(subKey.GetValue("InstallDate")?.ToString())
-                    };
-
-                    LogDebug($"{subKeyName} had an empty Name - ignoring");
-
-                    if (string.IsNullOrEmpty(item.Name))
-                    {
-                        return;
-                    }
-
-                    if (item.InstallDate == null && !string.IsNullOrEmpty(item.InstallLocation) && Directory.Exists(item.InstallLocation))
-                    {
-                        try
-                        {
-                            var directoryInfo = new DirectoryInfo(item.InstallLocation);
-
-                            item.InstallDate = directoryInfo?.CreationTime;
-
-                            LogDebug($"Obtained install date from {item.InstallLocation} ({item.InstallDate ?? null})");
-                        }
-                        catch (Exception iex)
-                        {
-                            LogError($"Error when getting the install date from ({item.InstallLocation}): {iex}");
-                        }
-                    }
-
-                    results.TryAdd(item.Name, item);
-                }
-                catch (Exception ex)
-                {
-                    LogError($"Error when parsing {subKeyName}: {ex}");
-                }
-            });
-
-            return results.Values.ToList();
         }
 
         public override List<ApplicationResponseItem> GetInstalledApplications()
