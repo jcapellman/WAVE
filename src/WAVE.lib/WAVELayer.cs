@@ -7,7 +7,6 @@ using WAVE.lib.Applications.Containers;
 
 using WAVE.lib.PlatformImplementations.Linux;
 using WAVE.lib.PlatformImplementations.MacOS;
-using WAVE.lib.PlatformImplementations.Windows;
 
 namespace WAVE.lib
 {
@@ -55,11 +54,12 @@ namespace WAVE.lib
 
         public List<ApplicationResponseItem> GetInstalledApplications()
         {
+#if NET5_0
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                return new WindowsApplicationCheck(_logger).GetInstalledApplications();
+                return new PlatformImplementations.Windows.WindowsApplicationCheck(_logger).GetInstalledApplications();
             }
-
+#endif
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
                 return new LinuxApplicationCheck(_logger).GetInstalledApplications();
