@@ -42,17 +42,12 @@ namespace WAVE.lib.PlatformImplementations.Windows
 
         private static string ParseVersion(string version, string displayVersion, string majorVersion, string minorVersion)
         {
-            if (!string.IsNullOrEmpty(version))
-            {
-                return version;
-            }
-
             if (!string.IsNullOrEmpty(displayVersion))
             {
                 return displayVersion;
             }
 
-            return string.IsNullOrEmpty(majorVersion) || string.IsNullOrEmpty(minorVersion) ? "" : $"{majorVersion}.{minorVersion}";
+            return string.IsNullOrEmpty(majorVersion) || string.IsNullOrEmpty(minorVersion) ? version : $"{majorVersion}.{minorVersion}";
         }
 
         private List<ApplicationResponseItem> GetApps(string registryKeyPath, string appendingSuffix)
