@@ -78,9 +78,17 @@ namespace WAVE.lib.PlatformImplementations.Windows
                                 return;
                             }
 
+                            var displayNameValue = subKey.GetValue("DisplayName");
+
+                            if (displayNameValue == null || string.IsNullOrEmpty(displayNameValue.ToString())) {
+                                LogDebug($"{subKeyName} had an empty Name - ignoring");
+
+                                return;
+                            }
+
                             var item = new ApplicationResponseItem
                             {
-                                Name = $"{subKey.GetValue("DisplayName")?.ToString()} - ({appendingSuffix})",
+                                Name = $"{displayNameValue} - ({appendingSuffix})",
                                 Version = ParseVersion(subKey.GetValue("Version")?.ToString(),
                                     subKey.GetValue("DisplayVersion")?.ToString(), subKey.GetValue("VersionMajor")?.ToString(),
                                     subKey.GetValue("VersionMinor")?.ToString()),
@@ -88,13 +96,6 @@ namespace WAVE.lib.PlatformImplementations.Windows
                                 InstallLocation = subKey.GetValue("InstallLocation")?.ToString(),
                                 InstallDate = ParseDate(subKey.GetValue("InstallDate")?.ToString())
                             };
-
-                            LogDebug($"{subKeyName} had an empty Name - ignoring");
-
-                            if (string.IsNullOrEmpty(item.Name))
-                            {
-                                return;
-                            }
 
                             if (item.InstallDate == null && !string.IsNullOrEmpty(item.InstallLocation) && Directory.Exists(item.InstallLocation))
                             {
