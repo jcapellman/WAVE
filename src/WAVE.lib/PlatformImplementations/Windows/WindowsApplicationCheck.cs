@@ -18,6 +18,14 @@ namespace WAVE.lib.PlatformImplementations.Windows
     {
         public WindowsApplicationCheck(ILogger logger = null) : base(logger) { }
 
+        private static string ASCIIEncode(string inputString) => 
+            System.Text.Encoding.ASCII.GetString(
+                System.Text.Encoding.Convert(System.Text.Encoding.UTF8,
+                System.Text.Encoding.GetEncoding(System.Text.Encoding.ASCII.CodePage,
+                    new System.Text.EncoderReplacementFallback(string.Empty),
+                    new System.Text.DecoderExceptionFallback()),
+                System.Text.Encoding.UTF8.GetBytes(inputString)));
+
         private DateTime? ParseDate(string value)
         {
             if (string.IsNullOrEmpty(value))
@@ -110,12 +118,12 @@ namespace WAVE.lib.PlatformImplementations.Windows
 
                                 var item = new ApplicationResponseItem
                                 {
-                                    Name = displayNameValue.ToString(),
+                                    Name = ASCIIEncode(displayNameValue.ToString()),
                                     Version = ParseVersion(subKey.GetValue("Version")?.ToString(),
                                         subKey.GetValue("DisplayVersion")?.ToString(), subKey.GetValue("VersionMajor")?.ToString(),
                                         subKey.GetValue("VersionMinor")?.ToString()),
-                                    Vendor = subKey.GetValue("Publisher")?.ToString(),
-                                    InstallLocation = subKey.GetValue("InstallLocation")?.ToString(),
+                                    Vendor = ASCIIEncode(subKey.GetValue("Publisher")?.ToString()),
+                                    InstallLocation = ASCIIEncode(subKey.GetValue("InstallLocation")?.ToString()),
                                     InstallDate = ParseDate(subKey.GetValue("InstallDate")?.ToString())
                                 };
 
